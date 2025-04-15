@@ -3,25 +3,29 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;      // Обычная скорость
-    public float runSpeed = 10f;      // Скорость бега
-    public float gravity = -9.81f;    // Гравитация
-    public float jumpHeight = 1f;     // Высота прыжка1
+    public float walkSpeed = 5f;
+    public float runSpeed = 10f;
+    public float gravity = -9.81f;
+    public float jumpHeight = 1f;
+    public float ceilingCheckDistance = 16f;
 
     [Header("Controls")]
-    public KeyCode runKey = KeyCode.LeftShift; // Клавиша бега
+    public KeyCode runKey = KeyCode.LeftShift;
+
+    [Header("Ceiling Check")]
+    public GameObject ceilingSensor; // Перетащите сюда CeilingSensor из редактора
 
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
-    private float currentSpeed;       // Текущая скорость (меняется при беге)
+    private float currentSpeed;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        currentSpeed = walkSpeed;     // Начинаем с обычной скорости
+        currentSpeed = walkSpeed;
     }
 
     void Update()
@@ -30,18 +34,11 @@ public class Controller : MonoBehaviour
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // Фикс "дрожания" на земле
+            velocity.y = -2f;
         }
 
-        // Переключение между ходьбой и бегом (удерживайте Shift)
-        if (Input.GetKeyDown(runKey))
-        {
-            currentSpeed = runSpeed;
-        }
-        if (Input.GetKeyUp(runKey))
-        {
-            currentSpeed = walkSpeed;
-        }
+        // Переключение бега/ходьбы
+        currentSpeed = Input.GetKey(runKey) ? runSpeed : walkSpeed;
 
         // Движение WASD
         float hor = Input.GetAxis("Horizontal");
@@ -55,8 +52,20 @@ public class Controller : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        // Гравитация
+        if ((controller.collisionFlags & CollisionFlags.Above) != 0)
+        {
+            velocity.y = Mathf.Min(-1f, velocity.y); // Гарантируем, что скорость не положительная
+        }
+        
+
+     
+
+        
+
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+
+
 }
