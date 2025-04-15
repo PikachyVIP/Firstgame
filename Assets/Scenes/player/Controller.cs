@@ -6,7 +6,7 @@ public class Controller : MonoBehaviour
     public float walkSpeed = 5f;      // Обычная скорость
     public float runSpeed = 10f;      // Скорость бега
     public float gravity = -9.81f;    // Гравитация
-    public float jumpHeight = 2f;     // Высота прыжка1
+    public float jumpHeight = 1f;     // Высота прыжка1
 
     [Header("Controls")]
     public KeyCode runKey = KeyCode.LeftShift; // Клавиша бега
