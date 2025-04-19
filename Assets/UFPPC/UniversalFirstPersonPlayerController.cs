@@ -377,13 +377,6 @@ namespace UFPPC
                 }
             }
         }
-        private void UpdateStamina() // Updates the stamina UI bar.
-        {
-            if (staminaBar != null)
-            {
-                staminaBar.fillAmount = playerStamina / maxStamina;
-            }
-        }
         private void SetRunSpeed(float speed) // Sets the run speed using the inherited parameters from when the method is run.
         {
             runSpeed = speed;
