@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UFPPC
 {
@@ -43,6 +44,7 @@ namespace UFPPC
         [SerializeField][Tooltip("The max amount of stamina the player has.")] private float maxStamina = 100f;
         [SerializeField][Range(0, 50)][Tooltip("How quickly the stamina drains.")] private float staminaDrain = 15f;
         [SerializeField][Range(0, 50)][Tooltip("How quickly the stramina regenerates.")] private float staminaRegen = 20f;
+        [SerializeField][Tooltip("Put the stamina bar UI here.")] private Image staminaBar;
         [SerializeField][Tooltip("Put the stamina canvas group here.")] private CanvasGroup staminaCanvasGroup;
 
         // Simple Camera System
@@ -375,6 +377,13 @@ namespace UFPPC
                         staminaCanvasGroup.alpha = 0; // Hides the UI canvas group.
                     }
                 }
+            }
+        }
+        private void UpdateStamina() // Updates the stamina UI bar.
+        {
+            if (staminaBar != null)
+            {
+                staminaBar.fillAmount = playerStamina / maxStamina;
             }
         }
         private void SetRunSpeed(float speed) // Sets the run speed using the inherited parameters from when the method is run.
